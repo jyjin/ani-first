@@ -1,0 +1,29 @@
+{
+    "host": "104.194.95.113",
+    "port": 27602,
+    "username": "root",
+    "password": ",./king123",
+    "protocol": "sftp",
+    "agent": null,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "passive": false,
+    "interactiveAuth": false,
+    "remotePath": "/www/ani-first",
+    "uploadOnSave": true,
+    "syncMode": "update",
+    "watcher": {
+        "autoUpload": true,
+        "autoDelete": true
+    },
+    "ignore": [
+        "**/node_modules/**",
+        "node_modules",
+        "**/.vscode/**",
+        "**/.git/**",
+        "**/.svn/**",
+        "**/.idea/**",
+        "**/.DS_Store"
+    ]
+    }
+    
