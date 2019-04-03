@@ -2,6 +2,15 @@
   "name": "ani-frist",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "pm2 start ./server/app.js",
+    "api-start": "node ./server/app.js",
+    "api-dev": "supervisor -w ./  -i ./node_modules/ ./server/app.js",
+    "client-dev": "react-app-rewired start",
+    "client-build": "react-app-rewired build",
+    "client-test": "react-app-rewired test",
+    "client-eject": "react-app-rewired eject"
+  },
   "dependencies": {
     "antd": "^3.15.1",
     "async": "^2.6.2",
@@ -36,14 +45,6 @@
     "socket.io-client": "^2.2.0",
     "supervisor": "^0.12.0",
     "validator": "^10.11.0"
-  },
-  "scripts": {
-    "api-start": "node ./server/app.js",
-    "api-dev": "supervisor -w ./  -i ./node_modules/ ./server/app.js",
-    "client-dev": "react-app-rewired start",
-    "client-build": "react-app-rewired build",
-    "client-test": "react-app-rewired test",
-    "client-eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
