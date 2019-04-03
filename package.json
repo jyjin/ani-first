@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./server/app.js",
+    "start": "pm2 start ./server/app.js --name ani-first --log-date-format='YYYY-MM-DD HH:mm:ss Z'",
     "api-start": "node ./server/app.js",
     "api-dev": "supervisor -w ./  -i ./node_modules/ ./server/app.js",
     "client-dev": "react-app-rewired start",
