@@ -11,7 +11,6 @@ const { auto } = require('async')
 const { cloneDeep, has } = require('lodash')
 const axios = require('axios')
 const config = require('./config')
-const qs = require('qs')
 
 const promisify = (fn, model) => {
     return function () {                                              // 这里只能用function不能用箭头函数
@@ -63,7 +62,6 @@ const AJAX = (options, callback) => {
             }
             callback(null, response.data)
         }).catch(function (error) {
-            alert('00' + error)
             if (error.response) {
                 console.log(`[ Http response error ]`);
                 console.log(`[ - data ]`, error.response.data);
@@ -109,7 +107,6 @@ const AJAX_FETCH = (options, callback) => {
         return new URLSearchParams(arr).toString()
     }
 
-
     let initObj = {}
     if (options.method === 'GET') { // 如果是GET请求，拼接url
         const searchStr = obj2String(options.params)
@@ -139,7 +136,6 @@ const AJAX_FETCH = (options, callback) => {
         callback(null, json) // 返回json数据
 
     }).catch(function (error) {
-        alert(error)
         if (error.response) {
             console.log(`[ Http response error ]`);
             console.log(`[ - data ]`, error.response.data);

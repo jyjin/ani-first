@@ -21,21 +21,9 @@ const User = require('../proxy/user')
  * remark:  
  *         可在此对各请求过滤预处理
  */
-var getIp = (ctx) => {
-    var ip = ctx.ip
-    if (~ctx.ip.indexOf('::ffff:')) {
-        ip = ctx.ip.replace('::ffff:', '')
-    }
-    if (~ctx.ip.indexOf('::1')) {
-        ip = '127.0.0.1'
-    }
-    return ip
-}
+
 
 module.exports = async (ctx, next) => {
-
-    log.info('jwtauth:ip', getIp(ctx))
-    log.info('jwtauth:path', ctx.path)
 
     // 定义 不用token 的api
     if (ctx.path.indexOf('/getToken') >= 0) {
@@ -44,7 +32,7 @@ module.exports = async (ctx, next) => {
 
     //定义 用token的api  对其验证
     var token = ctx.params.token || ctx.query.token || ctx.request.body.token || ctx.headers["token"]
-    log.info('* token === ', token)
+    log.info('jwtAuth:token', token)
 
     var err = null
     var result = null

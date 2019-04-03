@@ -30,7 +30,20 @@ app.use(crossOrigin);
 const bodyParser = require('koa-bodyparser')
 app.use(bodyParser())
 
+// 设置静态访问目录
+const root = __dirname.replace('server', 'build')
+const _static = require('koa-static')
+log.info('path', root)
+app.use(_static(root))
+
+
 routes(app)
+
+// 根目录render build首页
+const views = require('koa-views');
+app.use(views(root)).use(function (ctx) {
+    return ctx.render('./index.html')
+})
 
 log.info(`Listen on port ${port}...`)
 app.listen(port);

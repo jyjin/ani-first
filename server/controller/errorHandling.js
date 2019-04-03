@@ -9,6 +9,18 @@ const httpTimeout = require('../middleware/timeout')
  *         2.500处理
  *         3.错误信息收集
  */
+
+var getIp = (ctx) => {
+    var ip = ctx.ip
+    if (~ctx.ip.indexOf('::ffff:')) {
+        ip = ctx.ip.replace('::ffff:', '')
+    }
+    if (~ctx.ip.indexOf('::1')) {
+        ip = '127.0.0.1'
+    }
+    return ip
+}
+
 module.exports = (app, fn) => {
     // do when error
     app.on('error', (err, ctx) => {
@@ -21,6 +33,9 @@ module.exports = (app, fn) => {
     // 500 error, must at very beginning of all other routes
     app.use(async (ctx, next) => {
         try {
+            // 为所有请求添加日志
+            log.info('request:ip', getIp(ctx))
+            log.info('request:path', ctx.path)
             await next();
         } catch (err) {
             err.expose = true
@@ -33,8 +48,16 @@ module.exports = (app, fn) => {
     // all router methods
     fn()
 
-    // 404 error, must at very ending of all other routes
-    app.use((ctx) => {
+    // 404 error, must at very ending of all other routes, except default render index.html
+    app.use(async (ctx, next) => {
+        log.info('method', ctx.method)
+        // 如果是get url查找不到，直接返回404页面
+        if (ctx.method === "GET") {
+            return next()
+        }
+
+        // 如果是post url查找不到, 返回404json信息
+
         ctx.throw(404, 'Page not found')
         /**
          * 

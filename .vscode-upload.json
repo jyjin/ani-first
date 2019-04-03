@@ -13,8 +13,8 @@
     "uploadOnSave": true,
     "syncMode": "update",
     "watcher": {
-        "autoUpload": true,
-        "autoDelete": true
+        "autoUpload": false,
+        "autoDelete": false
     },
     "ignore": [
         "**/node_modules/**",

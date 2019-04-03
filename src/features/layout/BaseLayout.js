@@ -55,12 +55,12 @@ class BaseLayout extends Component {
 
         return (
             <Layout>
-                <Header theme={'light'} style={{ padding: 0 }}>
-                    <Row gutter={{xs: 8, sm: 16, md: 24}} style={{ margin: 0, padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' }}>
+                <Header style={{ padding: '0 12px', background: '#fff' }}>
+                    <Row gutter={{ xs: 8, sm: 16, md: 24 }} style={{ margin: '0', padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' }}>
                         <Col className="gutter-row" xs={21} sm={22} md={22} lg={23} xl={23} xxl={23}>
                             <Menu
                                 mode="horizontal"
-                                defaultSelectedKeys={['1'] }
+                                defaultSelectedKeys={['1']}
                                 style={{ lineHeight: '64px', border: 'none' }}
                             >
                                 <Menu.Item key="1">热门</Menu.Item>
@@ -68,7 +68,7 @@ class BaseLayout extends Component {
                                 <Menu.Item key="3">附近</Menu.Item>
                             </Menu>
                         </Col>
-                        <Col className="gutter-row" xs={3}  sm={2} md={2} lg={1} xl={1} xxl={1}>
+                        <Col className="gutter-row" xs={3} sm={2} md={2} lg={1} xl={1} xxl={1}>
                             <a onClick={() => {
                                 sessionStorage.removeItem('ANF_TOKEN')
                                 this.onNav('/')
