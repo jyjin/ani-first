@@ -20,7 +20,7 @@ const style = {
     }
 }
 
-class SearchLayout extends Component {
+class UserLayout extends Component {
 
     constructor(props) {
         super(props);
@@ -58,9 +58,24 @@ class SearchLayout extends Component {
         return (
             <Layout>
                 <Header theme={'light'} style={{ padding: 0, background: '#fff', textAlign: 'center' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'rgba(0, 0, 0, 0.85);' }}>{'发现'}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'rgba(0, 0, 0, 0.85)' }}>{'个人中心'}</div>
+                    {/* <Row gutter={24} style={{ margin: 0, padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' }}>
+                        <Col className="gutter-row" span={10}>
+                            <span style={{ padding: '10px' }}>{'个人中心'}</span>
+                        </Col>
+                        <Col className="gutter-row" span={14}>
+                            <Search
+                                placeholder="input search text"
+                                onSearch={value => console.log(value)}
+                                enterButton
+                                size="small"
+                                style={{ padding: '20px 10px' }}
+                            />
+                        </Col>
+
+                    </Row> */}
                 </Header>
-                <Content style={{ padding: '0 50px', minHeight: 'calc(100vh - 66px - 52.5px )' }}>
+                <Content style={{ padding: '0', minHeight: 'calc(100vh - 66px - 52.5px )' }}>
                     {this.props.children}
                 </Content>
                 <Footer style={{ padding: '10px 0', textAlign: 'center', background: '#fff' }}>
@@ -88,4 +103,4 @@ export default connect({
     token: 'user',
     user: 'user',
     loading: 'user'
-}, withRouter(SearchLayout))
+}, withRouter(UserLayout))

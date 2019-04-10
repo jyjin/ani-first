@@ -69,10 +69,7 @@ class BaseLayout extends Component {
                             </Menu>
                         </Col>
                         <Col className="gutter-row" xs={3} sm={2} md={2} lg={1} xl={1} xxl={1}>
-                            <a onClick={() => {
-                                sessionStorage.removeItem('ANF_TOKEN')
-                                this.onNav('/')
-                            }}>退出</a>
+                           
                         </Col>
                     </Row>
                 </Header>

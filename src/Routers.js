@@ -4,7 +4,7 @@ import Register from './features/Register';
 import Home from './features/Home';
 import Ani from './features/Ani';
 import Find from './features/Find';
-import User from './features/User';
+import User from './features/me/User';
 import About from './features/About';
 import Page404 from './features/Page404';
 import {
