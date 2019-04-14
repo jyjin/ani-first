@@ -24,7 +24,7 @@ const promisify = (fn, model) => {
 }
 
 const AJAX = (options, callback) => {
-    let token = sessionStorage.getItem('ANF_TOKEN') || ''
+    let token = localStorage.getItem('ANF_TOKEN') || ''
 
     let _config = {
         headers: {
@@ -81,7 +81,7 @@ const AJAX = (options, callback) => {
 }
 
 const AJAX_FETCH = (options, callback) => {
-    let token = sessionStorage.getItem('ANF_TOKEN') || ''
+    let token = localStorage.getItem('ANF_TOKEN') || ''
 
     let _config = {
         headers: {
@@ -109,6 +109,11 @@ const AJAX_FETCH = (options, callback) => {
 
     let initObj = {}
     if (options.method === 'GET') { // 如果是GET请求，拼接url
+        if (options.params) {
+            options.params.token = token
+        } else {
+            options.params = { token }
+        }
         const searchStr = obj2String(options.params)
         options.url += '?' + searchStr
         initObj = {

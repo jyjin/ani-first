@@ -12,6 +12,7 @@ const User = require('../../proxy').User
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
 const { expiresIn, appTokenSecret } = require('../../config').server
+const uuid = require('uuid/v1');
 const {
     DATA_GET_ERROR, DATA_SAVE_ERROR, DATA_UPDATE_ERROR, ONLINE_FAILED, AUTH_TOKEN_ERROR, LOGIN_ERROR, REQUIRE_SOME_PARAM,
     ILLEGAL_CAPTCHA
@@ -197,23 +198,117 @@ exports.queryUserByUsername = (ctx, next) => {
 }
 
 
+/**
+ * 模拟高并发处理
+ */
+var queryQueue = [];  // 并发请求等待队列
+var userList = null;  // 请求结果缓存
+var timestamp = null; // 时间戳
+const EventEmitter = require('events');
+const PUB = new EventEmitter();
 
-exports.queryUserList = (ctx, next) => {
-    User.queryUserList((err, result) => {
-        if (err || !result) {
-            console.log(`* ERROR IN [ queryUserInfo ]: `, err)
-            ctx.body = {
-                res: -1,
-                message: 'Query data error'
+
+// 查询DB处理
+PUB.on('queryUserList', (eventData) => {
+
+    log.info('请求触发事件')
+    const queryDB = () => {
+        log.info('开始查询DB...')
+        User.queryUserList((error, result) => {
+            timestamp = Number(new Date())
+            if (error || !result) {
+                userList = null
+                log.info('DB查询失败...')
+
+                queryQueue.map(item => {
+                    PUB.emit(`queryEnd_${item.key}`, { res: -1, key: item.key, msg: 'DB查询失败' })
+                })
+            } else {
+                log.info('DB查询成功并结束')
+                userList = result
+                queryQueue.map(item => {
+                    PUB.emit(`queryEnd_${item.key}`, { res: 1, key: item.key, msg: '超过1s,DB查询成功并返回' })
+                })
             }
-            return
-        }
+        })
+    }
 
+    if (!userList) {
+        log.info('没有缓存查询DB')
+        userList = null
+        queryDB()
+    } else {
+        if (timestamp && eventData.timestamp - timestamp > 1000) {
+            log.info('超过1s查询DB')
+            userList = null
+            queryDB()
+        } else {
+            log.info('1s内请求直接返回缓存')
+            queryQueue.map(item => {
+                PUB.emit(`queryEnd_${item.key}`, { res: 1, key: item.key, msg: '超过1s查询DB成功返回' })
+            })
+        }
+    }
+
+
+})
+
+exports.queryUserList = async (ctx, next) => {
+
+    var err = null
+    var msg = null
+
+    // 当前请求待处理对象
+    var queryObj = {
+        key: uuid(),
+        timestamp: Number(new Date())
+    }
+
+    // 1s内的请求 如果有缓存 直接返回缓存数据
+    if (userList && timestamp && queryObj.timestamp - timestamp < 1000) {
+        log.info('queryUserList:1s内请求直接返回缓存')
         ctx.body = {
             res: 1,
-            data: result
+            data: userList,
+            msg: 'queryUserList:1s内请求直接返回缓存'
         }
+        return
+    }
+
+    // 第一次请求 以及 超过1s内查询过数据的请求，加入队列并发送指令查询数据
+    queryQueue.push(queryObj)
+    PUB.emit('queryUserList', queryObj)
+
+    await new Promise(resolve => {
+        PUB.on(`queryEnd_${queryObj.key}`, eventData => {
+
+            // 核心：使用setImmediate将处理结果加入事件队列堆栈处理，不影响后续请求进来
+            setImmediate(() => {
+                if (eventData.res < 0) {
+                    err = eventData.error
+                }
+                msg = eventData.msg
+                queryQueue.splice(queryQueue.findIndex(item => item.key === eventData.key), 1)
+                console.log(queryQueue)
+                resolve()
+            })
+        })
     })
+
+    if (err) {
+        ctx.body = {
+            res: -1,
+            message: 'Query data error',
+            msg
+        }
+    } else {
+        ctx.body = {
+            res: 1,
+            data: userList,
+            msg
+        }
+    }
+    return
 }
 
 let setUserStatus = (id, status, callback) => {

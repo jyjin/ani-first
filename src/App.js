@@ -47,7 +47,7 @@ class App extends Component {
     }
 
     authByToken() {
-        var token = sessionStorage.getItem('ANF_TOKEN') || ''
+        var token = localStorage.getItem('ANF_TOKEN') || ''
         if (token) {
             this.props.dispatch(TOKEN_SIGN_IN_LOADING, { loading: true })
             api.authByToken({ token }).then(json => {

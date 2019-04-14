@@ -60,7 +60,6 @@ const API = [
         url: `/user/chatSwitch`,
         isPost: true
     },
-
 ]
 
 export default AJAX(API)

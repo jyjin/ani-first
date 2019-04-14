@@ -16,7 +16,11 @@ exports.addUser = (bean, callback) => {
 
 // 查询用户列表 admin除外
 exports.queryUserList = (callback, showPassword = 0) => {
-    User.find({ account: { $ne: 'admin' } }, !showPassword ? { password: showPassword } : {}).exec(callback)
+    log.info('querying the DB ...')
+    User.find({ 
+        // account: { $ne: 'admin' } 
+    }, 
+    !showPassword ? { password: showPassword } : {}).exec(callback)
 }
 
 // 查询用户列表 根据指定条件

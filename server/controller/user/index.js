@@ -43,7 +43,7 @@ module.exports = (app) => {
     // 查询用户 根据用户名
     router.get('/getUser/:username', jwtAuth, user.queryUserByUsername);
     // 查询用户列表
-    router.use('/queryUserList', jwtAuth, user.queryUserList)
+    router.get('/queryUserList', jwtAuth, user.queryUserList)
     // 上线
     router.use('/online', jwtAuth, user.online)
     // 下线

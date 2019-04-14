@@ -43,7 +43,7 @@ class UserAccount extends Component {
                     type="primary"
                     style={{ marginTop: '24px', width: '100%' }}
                     onClick={() => {
-                        sessionStorage.removeItem('ANF_TOKEN')
+                        localStorage.removeItem('ANF_TOKEN')
                         this.onNav('/')
                     }}>退出登录</Button>
             </div>
