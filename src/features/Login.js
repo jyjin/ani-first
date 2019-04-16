@@ -103,7 +103,7 @@ class NormalLoginForm extends Component {
                         <Button type="primary" htmlType="submit" className="login-form-button">
                             {LOGIN_IN}
                         </Button>
-                        <a href="" onClick={() => { this.onNav('register') }}>{REGISTER}</a>
+                        <a href="javascript:null" onClick={() => { this.onNav('register') }}>{REGISTER}</a>
                     </Form.Item>
                 </Form>
 
