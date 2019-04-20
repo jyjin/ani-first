@@ -93,7 +93,18 @@ const AJAX_FETCH = (options, callback) => {
         url: config.siteUrl + options.url,
         params: options.query,                                  //?name=XXX&age=XXX
         data: options.data,                                     //post json object
+        isUpload: options.isUpload,
     }
+
+    // 文件上传
+    if (options.isUpload) {
+        _config.headers = {
+            'Accept': 'application/json',
+            // 'Content-Type': 'multipart/form-data',
+            token
+        }
+    }
+
     options = Object.assign({}, _config)
 
     /**
@@ -122,13 +133,15 @@ const AJAX_FETCH = (options, callback) => {
             mode: 'cors',
         }
     } else {
+
         initObj = {
             method: options.method,
             credentials: 'include',
             mode: 'cors',
             headers: new Headers(options.headers),
-            body: obj2String(options.data)
+            body: options.isUpload ? options.data : obj2String(options.data)
         }
+
     }
 
     console.log('send fetch request... ')
@@ -167,9 +180,9 @@ const init = (API) => {
             auto({
                 request: (cb) => {
 
-                    var _cloneData = cloneDeep(data)
+                    var _cloneData = fun.isUpload ? data : cloneDeep(data)
                     var lackField = false
-                    if (~fun.url.indexOf(':') || ~fun.url.indexOf('：')) {
+                    if (!fun.isUpload && ~fun.url.indexOf(':') || ~fun.url.indexOf('：')) {
                         fun.url = fun.url.replace(/:([A-Za-z_\$][A-Za-z0-9_\$]*)/g, function (match, field) {
                             if (has(_cloneData, field)) {
                                 return data[field];
@@ -189,7 +202,10 @@ const init = (API) => {
                         method: fun.isPost ? 'POST' : 'GET',
                         data: data,
                         query: query,
+                        isUpload: fun.isUpload
                     }
+
+                    console.log('options form == ', options.formData)
                     // AJAX(options, cb)
                     AJAX_FETCH(options, cb)
                 }

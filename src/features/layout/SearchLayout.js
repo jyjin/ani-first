@@ -13,7 +13,7 @@ const { Header, Content } = Layout;
 const style = {
     header: { padding: 0 },
     row: { margin: 0, padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' },
-    content: { padding: '0 50px', minHeight: 'calc(100vh - 66px - 52.5px )' },
+    content: { padding: '0 50px', height: 'calc(100vh - 66px - 52.5px )', overflow: 'auto' },
     icon: { fontSize: '20px', color: '#25b864', padding: '5px', cursor: 'pointer' },
     loading: {
         position: 'absolute',

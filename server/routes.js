@@ -7,10 +7,12 @@
  */
 const errorHandling = require('./controller/errorHandling')
 const userRoute = require('./controller/user')
+const goodRoute = require('./controller/good')
 
 module.exports = (app) => {
     errorHandling(app, () => {
         userRoute(app)
+        goodRoute(app)
         // ...other module routes
     })
 }

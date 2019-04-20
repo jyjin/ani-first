@@ -1,7 +1,7 @@
 .traffic-wrap{
     display: flex;
     align-items: flex-start;
-    margin: 20px auto;
+    margin: -25px auto;
     height: 600px;
     justify-content: center;
     border-bottom: 5px solid;

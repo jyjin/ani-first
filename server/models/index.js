@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const TestSchema = require('./test')
 const UserSchema = require('./user')
+const GoodSchema = require('./good')
 
 mongoose.connect('mongodb://jyjin:jyjin2018@104.194.95.113:27017/webApp',(err)=>{
     if(err){
@@ -14,5 +15,6 @@ mongoose.connect('mongodb://jyjin:jyjin2018@104.194.95.113:27017/webApp',(err)=>
 
 exports.Test = mongoose.model('Test', new Schema(TestSchema));
 exports.User = mongoose.model('User', new Schema(UserSchema));
+exports.Good = mongoose.model('Good', new Schema(GoodSchema));
 
 

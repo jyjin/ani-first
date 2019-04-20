@@ -12,7 +12,7 @@ const { Header, Content } = Layout;
 const style = {
     header: { padding: 0, background: '#fff', textAlign: 'center' },
     headerBar: { fontWeight: 'bold', fontSize: '16px', color: 'rgba(0, 0, 0, 0.85)' },
-    content: { padding: '0 50px', minHeight: 'calc(100vh - 66px - 52.5px )' },
+    content: { padding: '0 50px', height: 'calc(100vh - 66px - 52.5px )', overflow: 'auto' },
     loading: {
         position: 'absolute',
         left: '50%',

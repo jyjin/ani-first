@@ -11,7 +11,7 @@ const { Header, Content } = Layout;
 const style = {
     header: { padding: '0 12px', background: '#fff' },
     row: { margin: '0', padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' },
-    content: { padding: '0', minHeight: 'calc(100vh - 52.5px )' },
+    content: { padding: '0', height: 'calc(100vh - 52.5px )', overflow: 'auto' },
     loading: {
         position: 'absolute',
         left: '50%',

@@ -27,7 +27,7 @@ class NavFooter extends Component {
             pathname: path,
             state: { fromDashboard: true }
         }
-        history.push(_location)
+        history.replace(_location)
     }
 
     setIconStyle(path) {

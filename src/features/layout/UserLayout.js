@@ -10,7 +10,7 @@ const { Header, Content } = Layout;
 const style = {
     header: { padding: 0, background: '#fff', textAlign: 'center' },
     headerBar: { fontWeight: 'bold', fontSize: '16px', color: 'rgba(0, 0, 0, 0.85)' },
-    content: { padding: '0', minHeight: 'calc(100vh - 66px - 52.5px )' },
+    content: { padding: '0', height: 'calc(100vh - 66px - 52.5px )', overflow: 'auto' },
     icon: { fontSize: '20px', color: '#25b864', padding: '5px', cursor: 'pointer' },
     loading: {
         position: 'absolute',

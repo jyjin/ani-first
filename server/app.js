@@ -36,6 +36,9 @@ const _static = require('koa-static')
 log.info('path', root)
 app.use(_static(root))
 
+//设置静态资源访问目录
+const file = __dirname.replace('server', 'public/upload')
+app.use(_static(file))
 
 routes(app)
 

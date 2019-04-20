@@ -59,7 +59,16 @@ const API = [
         name: `changeFriends`,
         url: `/user/chatSwitch`,
         isPost: true
-    },
+    },{
+        name: `addGood`,
+        url: `/good/add`,
+        isPost: true,
+        isUpload: true
+    },{
+        name: `getGoodList`,
+        url: `/good/list`,
+        isPost: true,
+    }
 ]
 
 export default AJAX(API)
