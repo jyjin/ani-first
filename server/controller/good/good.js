@@ -11,6 +11,7 @@
 const Good = require('../../proxy').Good
 const uuid = require('uuid/v1');
 var fs = require('fs');
+const { pageSize: size } = require('../../config').server
 const {
     DATA_GET_ERROR, DATA_SAVE_ERROR, DATA_UPDATE_ERROR, ONLINE_FAILED, AUTH_TOKEN_ERROR, LOGIN_ERROR, REQUIRE_SOME_PARAM,
     ILLEGAL_CAPTCHA
@@ -180,8 +181,16 @@ exports.addGood = async (ctx) => {
 
 exports.getProducts = async (ctx) => {
     var error = null, result = null
+    var opt = {
+        page: ctx.request.body.page || 0,
+        userId: ctx.request.body.userId,
+        size: size,
+    }
+
+    log.info('getProducts:params', ctx.request.body)
+
     await new Promise((resolve) => {
-        Good.getProducts((err, res) => {
+        Good.getProducts(opt, (err, res) => {
             if (err || !res) {
                 err = DATA_GET_ERROR
             } else {

@@ -19,8 +19,8 @@ const style = {
     row: { margin: '0', padding: '0', background: '#fff', 'borderBottom': '1px solid #e8e8e8' },
     content: { padding: '0 50px', minHeight: 'calc(100vh - 52.5px )' },
     tabs: { background: '#fff', minHeight: 'calc(100vh - 52.5px)' },
-    tabPane: { padding: '20px', background: 'none' },
-    icon: { position: 'absolute', padding: '12px 0', width: "60px", top: 0, right: 0, fontSize: '20px', color: '#25b864' },
+    tabPane: { background: '#f0f2f5' },
+    icon: { position: 'absolute', padding: '22px 0', width: "60px", top: 0, right: 0, fontSize: '20px', color: '#25b864' },
 }
 
 class Home extends Component {
@@ -41,9 +41,9 @@ class Home extends Component {
         return (
             <BaseLayout>
                 <Tabs defaultActiveKey="1" onChange={callback} style={style.tabs}>
-                    <TabPane style={style.tabPane} tab="热门" key="1"><Hot {...this.props} /></TabPane>
-                    <TabPane style={style.tabPane} tab="精选" key="2"><Featured {...this.props} /></TabPane>
-                    <TabPane style={style.tabPane} tab="附近" key="3"><Near {...this.props} /></TabPane>
+                    <TabPane style={style.tabPane} tab="全部" key="1"><Hot {...this.props} /></TabPane>
+                    <TabPane style={style.tabPane} tab="案例" key="2"><Featured {...this.props} /></TabPane>
+                    <TabPane style={style.tabPane} tab="红路灯" key="3"><Near {...this.props} /></TabPane>
                 </Tabs>
                 <Icon type="camera"
                     size="large"
@@ -65,7 +65,7 @@ class Home extends Component {
                     onClose={this.onClose}
                     visible={this.state.visible}
                 >
-                    <AddGood 
+                    <AddGood
                         {...this.props}
                         onClose={this.onClose}
                     />

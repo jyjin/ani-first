@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './features/Login';
 import Register from './features/Register';
-import Home from './features/Home';
+import Home from './features/home/Home';
 import Ani from './features/ani/Ani';
 import Find from './features/Find';
 import User from './features/me/User';

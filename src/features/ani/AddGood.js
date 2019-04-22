@@ -35,6 +35,12 @@ class AddGood extends Component {
 
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                if (this.state.fileCountError) {
+                    debugger
+                    message.error('最多4张图片')
+                    return;
+                }
+
                 for (var key in values) {
                     formData.append(key, values[key])
                 }
@@ -42,33 +48,23 @@ class AddGood extends Component {
                 this.setState({
                     uploading: true,
                 });
+
+                var p = message.loading('上传中...')
+
                 api.addGood(formData).then(json => {
                     console.log('add good == ', json)
                     if (json.res > 0) {
+                        p.then(v =>
+                            message.success('上传成功！')
+                        )
                         this.props.onClose()
                         this.onNav('/')
                     } else {
-
+                        p.then(v =>
+                            message.error('上传失败！')
+                        )
                     }
                 })
-
-                // let token = localStorage.getItem('ANF_TOKEN') || ''
-                // console.log('token == ', token)
-                // let headers = {
-                //     'Accept': 'application/json',
-                //     'Content-Type': false,
-                //     token
-                // }
-
-                // fetch('http://localhost:80/good/add', {
-                //     header: new Headers(headers),
-                //     method: 'post',
-                //     body: formData,
-                // }).then(function (res) {
-                //     return res.json();
-                // }).then(function (json) {
-                //     console.log(json)
-                // })
             }
         });
 
@@ -79,9 +75,30 @@ class AddGood extends Component {
         const props = {
             name: 'file',
             multiple: true,
+            accept: 'image/*',
             // listType: 'picture',
+            showUploadList: {
+                showPreviewIcon: true,
+                showRemoveIcon: true,
+            },
             onChange: (info) => {
                 const status = info.file.status;
+                console.log('info == ', status)
+                if (info.fileList && info.fileList.length > 4) {
+                    debugger
+                    message.config({
+                        maxCount: 1
+                    })
+                    message.error('不能超过4张图片')
+                    this.setState({
+                        fileCountError: true
+                    })
+                    return;
+                } else {
+                    this.setState({
+                        fileCountError: false
+                    })
+                }
                 if (status !== 'uploading') {
                     console.log('info.file = ', info.file);
                     console.log('info.fileList = ', info.fileList);

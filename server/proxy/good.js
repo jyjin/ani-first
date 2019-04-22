@@ -1,5 +1,6 @@
 const Models = require('../models')
 const Good = Models.Good
+const { pageSize } = require('../config').server
 
 // 添加用户
 exports.addGood = (bean, callback) => {
@@ -13,8 +14,14 @@ exports.addGood = (bean, callback) => {
     })
 }
 
-exports.getProducts = (callback) => {
-    Good.find().sort({ updateAt: -1 }).exec(callback)
+exports.getProducts = (opt, callback) => {
+    var page = opt.page || 1
+    var size = opt.size || pageSize
+    var query = {}
+    if (opt.userId) {
+        query.userId = opt.userId
+    }
+    Good.find(query).skip((page - 1) * size).limit(size).sort({ updateAt: -1 }).exec(callback)
 }
 
 

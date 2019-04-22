@@ -5,3 +5,6 @@ exports.TOKEN_SIGN_IN = 'token_sign_in';
 exports.TOKEN_SIGN_IN_LOADING = 'token_sign_in_loading';
 exports.GOOD_LIST = 'good_list';
 exports.UPDATE_IMG = 'update_img';
+exports.PREVIEW = 'preview';
+exports.PREVIEW_RESET = 'preview_reset';
+exports.PERSONAL_GOOD_LIST = 'personal_good_list';

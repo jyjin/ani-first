@@ -17,6 +17,7 @@ module.exports = {
         expiresIn: 60 * 3600 * 2,                   // token过期时长（秒/s）
         appTokenSecret: 'jyjinsavetheworld',        // token验证密匙
         httpTimeout: 5,                             // http请求超时时间（秒/s）
+        pageSize: 3,
     },
     /**
      * 日志配置

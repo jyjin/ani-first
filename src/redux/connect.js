@@ -28,6 +28,8 @@ const getMapStateToProps = map => {
     }
     return state => {
 
+        // console.log('store state == ', state)
+
         // const mapStateToProps = state => {
         //     console.log('state == ', state)
         //     return {
@@ -40,7 +42,7 @@ const getMapStateToProps = map => {
         for (var key in map) {
             obj[key] = state[map[key]][key]
         }
-
+        // console.log('obj == ', obj)
         return obj
     }
 }

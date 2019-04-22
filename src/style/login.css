@@ -20,7 +20,7 @@
      padding: 0
  }
 
- .webkitScroll {
+ .webkit-scroll {
      -webkit-overflow-scrolling: touch;
  }
 
@@ -29,3 +29,42 @@
          width: 100%;
      }
  }
+
+ .no-touch {
+     -webkit-touch-callout: none;
+     -webkit-user-select: none;
+     -khtml-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+ }
+
+ div.ant-tabs-bar {
+     margin: 0;
+     position: fixed;
+     background: #fff;
+     width: 100%;
+ }
+
+ .ant-tabs-bar .ant-tabs-nav {
+     height: 67px;
+     line-height: 40px;
+     margin: 0 12px;
+ }
+
+ div.ant-tabs-nav .ant-tabs-tab {
+     padding: '12px 20px';
+     margin: 0;
+ }
+
+ div.ant-tabs-nav .ant-tabs-tab-active {
+     font-weight: 400;
+ }
+
+ div.ant-tabs .ant-tabs-top-content > .ant-tabs-tabpane, .ant-tabs .ant-tabs-bottom-content > .ant-tabs-tabpane {
+ /* div.ant-tabs .ant-tabs-top-content.ant-tabs-content-animated{ */
+    height: calc(100vh - 66px - 55px );
+    margin-top: 66px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}

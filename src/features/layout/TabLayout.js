@@ -58,7 +58,7 @@ class TabLayout extends Component {
 
         return (
             <Layout>
-                <Content style={style.content}>
+                <Content style={style.content} className='webkit-scroll'>
                     {this.props.children}
                 </Content>
                 <Footer />

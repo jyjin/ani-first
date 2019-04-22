@@ -5,8 +5,12 @@
 import { combineReducers } from 'redux';
 import user from './user';
 import good from './good';
+import personalGood from './personalGood';
+import preview from './preview';
 
 export default combineReducers({
     user,
     good,
+    personalGood,
+    preview,
 })
