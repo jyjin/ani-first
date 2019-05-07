@@ -43,7 +43,7 @@ class BaseLayout extends Component {
 
     render() {
 
-        var token = localStorage.getItem('ANF_TOKEN') || ''
+        var token = sessionStorage.getItem('ANF_TOKEN') || ''
         if (!token) {
             this.onNav('login')
         }

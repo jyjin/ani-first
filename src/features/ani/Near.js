@@ -7,8 +7,14 @@ import '../../style/traffic-light.css';
 const TRANFFIC_LIGHT_SETTING = {
     red: 15,
     yellow: 3,
-    green: 15
+    green: 15,
+    // red: 3,
+    // yellow: 1,
+    // green: 3,
 }
+
+var tcs = []
+var ts = []
 
 class Near extends Component {
     constructor(props, context) {
@@ -16,16 +22,20 @@ class Near extends Component {
         this.state = {
             red: '',
             yellow: '',
-            green: ''
+            green: '',
+            tc: []
         }
     }
 
     setLight = (color, time) => {
         var p = new Promise(resolve => {
             this.timeTick(color, time)
-            setTimeout(() => {
+            var t = setTimeout(() => {
+                clearTimeout(t)
+                ts.splice(ts.findIndex(tt => t === tt), 1)
                 resolve({ color, time })
             }, time * 1000)
+            ts.push(t)
 
         })
         return p
@@ -35,13 +45,33 @@ class Near extends Component {
     timeTick = (color, time) => {
         var t = time
         var tc = setInterval(() => {
-            if (t == 0) {
+            if (t === 0) {
                 clearInterval(tc)
+                tcs.splice(tcs.findIndex(t => t === tc), 1)
+                console.log('change tcs == ', tcs)
                 return
             }
             console.log(`Traffic light: ${color} == ${t}s`)
             this.setStyle(color, t--)
         }, 1000)
+        tcs.push(tc)
+        console.log('tcs == ', tcs)
+    }
+
+    clearTimeTick = () => {
+        console.log('clear tcs == ', tcs)
+        for (let i = 0; i < tcs.length; i++) {
+            console.log('clear ' + tcs[i])
+            clearInterval(tcs[i])
+        }
+        tcs = []
+
+        console.log('clear ts == ', tcs)
+        for (let i = 0; i < ts.length; i++) {
+            console.log('clear ' + ts[i])
+            clearTimeout(ts[i])
+        }
+        ts = []
     }
 
     setStyle = (color, time) => {
@@ -78,12 +108,19 @@ class Near extends Component {
         }).then(v => {
             return this.setLight('green', TRANFFIC_LIGHT_SETTING.green)
         }).then(v => {
-            this.TrafficLight()
+            if (this.TrafficLight) {
+                this.TrafficLight()
+            }
         })
     }
 
     componentDidMount() {
         this.TrafficLight()
+    }
+
+    componentWillUnmount() {
+        this.clearTimeTick()
+        this.TrafficLight = null
     }
 
     sendRequest() {

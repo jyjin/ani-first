@@ -14,6 +14,8 @@ module.exports = (app) => {
     // 添加商品
     router.post('/add', jwtAuth, good.addGood)
     router.post('/list', jwtAuth, good.getProducts)
+    router.post('/vote', jwtAuth, good.vote)
+    router.post('/disvote', jwtAuth, good.disvote)
 
     app.use(router.routes())
 }

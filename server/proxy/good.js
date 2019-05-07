@@ -24,4 +24,7 @@ exports.getProducts = (opt, callback) => {
     Good.find(query).skip((page - 1) * size).limit(size).sort({ updateAt: -1 }).exec(callback)
 }
 
+exports.queryGoodById = (_id, callback) => {
+    Good.findOne({ _id }).exec(callback)
+}
 

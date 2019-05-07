@@ -6,7 +6,7 @@ const defaultState = {
     loading: true,
 };
 
-const setToken = token => localStorage.setItem('ANF_TOKEN', token)
+const setToken = token => sessionStorage.setItem('ANF_TOKEN', token)
 
 // reducer可以接收state，但是绝不能修改state
 // reducer必须是纯函数

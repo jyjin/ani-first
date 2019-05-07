@@ -210,3 +210,100 @@ exports.getProducts = async (ctx) => {
     }
     return
 }
+
+const votingAction = async (ctx, type) => {
+
+    var opt = {
+        goodId: ctx.request.body.goodId,
+        userId: ctx.request.body.userId,
+    }
+
+    if (!opt.goodId || !opt.userId) {
+        ctx.body = REQUIRE_SOME_PARAM('goodId,userId')
+        return
+    }
+
+    // 设定需要操作的字段值
+    var voting = 'voteIds'
+    var disvoting = 'disvoteIds'
+    if(type === 'disvote'){
+        var t = voting
+        voting = disvoting
+        disvoting = t
+    }
+
+    var error = null
+    var result = null
+
+    // 查询商品
+    await new Promise(resolve => {
+        Good.queryGoodById(opt.goodId, (err, res) => {
+            if (err || !res) {
+                error = DATA_GET_ERROR
+                resolve()
+                return;
+
+            } else {
+                result = res
+                resolve()
+                return
+            }
+        })
+    })
+
+    // 查询错误直接返回
+    if (error) {
+        ctx.body = error
+        return 
+    }
+
+    var good = result
+
+    !good[voting] && (good[voting] = [])
+    !good[disvoting] && (good[disvoting] = [])
+
+    var index = good[voting].indexOf(opt.userId)
+    good.markModified(voting)
+    good.markModified(disvoting)
+
+    // 进行点赞处理
+    if (~index) {
+        // 已经点赞过 直接取消赞
+        good[voting].splice(index, 1)
+    } else {
+        // 还没点赞过 添加赞 如果有反对赞 取消该用户反对赞
+        good[voting].push(opt.userId)
+        var disvotingIndex = good[disvoting].indexOf(opt.userId)
+        if(~disvotingIndex){
+            good[disvoting].splice(disvotingIndex, 1)
+        }
+    }
+
+    // 保存点赞
+    await new Promise(r => {
+        good.save(err1 => {
+            if (err1) {
+                error = DATA_SAVE_ERROR
+            } else {
+                result = good
+            }
+            r()
+        })
+    })
+
+
+    if(error){
+        ctx.body = error
+        return
+    }else{
+        ctx.body = {
+            res:1,
+            data: result
+        }
+    }
+}
+
+
+exports.vote = async (ctx, next) => votingAction(ctx, 'vote')
+
+exports.disvote = async (ctx, next) =>  votingAction(ctx, 'disvote')

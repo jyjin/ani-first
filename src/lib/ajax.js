@@ -24,7 +24,7 @@ const promisify = (fn, model) => {
 }
 
 const AJAX = (options, callback) => {
-    let token = localStorage.getItem('ANF_TOKEN') || ''
+    let token = sessionStorage.getItem('ANF_TOKEN') || ''
 
     let _config = {
         headers: {
@@ -81,7 +81,7 @@ const AJAX = (options, callback) => {
 }
 
 const AJAX_FETCH = (options, callback) => {
-    let token = localStorage.getItem('ANF_TOKEN') || ''
+    let token = sessionStorage.getItem('ANF_TOKEN') || ''
 
     let _config = {
         headers: {

@@ -25,4 +25,6 @@ module.exports = {
     type: { type: Number, default: 0 },
     status: { type: Number, default: 0 },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    voteIds: { type: Array, default: [] },
+    disvoteIds: { type: Array, default: [] },
 }

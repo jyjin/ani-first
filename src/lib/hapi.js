@@ -68,6 +68,14 @@ const API = [
         name: `getGoodList`,
         url: `/good/list`,
         isPost: true,
+    },{
+        name: `vote`,
+        url: `/good/vote`,
+        isPost: true,
+    },{
+        name: `disvote`,
+        url: `/good/disvote`,
+        isPost: true,
     }
 ]
 

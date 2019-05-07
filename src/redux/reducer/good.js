@@ -1,5 +1,5 @@
 
-import { GOOD_LIST, UPDATE_IMG, PREVIEW } from '../action/actionTypes';
+import { GOOD_LIST, UPDATE_IMG, UPDATE_VOTE } from '../action/actionTypes';
 var defaultState = []
 
 
@@ -18,7 +18,22 @@ export default (state = defaultState, action) => {
             newState.goodList = goodList
             newState.goodList[index].imgs[innerIndex] = image
             break;
-            
+
+        case UPDATE_VOTE:
+            var { good, goodList } = action.payload
+            console.log('goodList 000 ', goodList)
+            console.log('good 000 ', goodList)
+
+            var index = goodList.findIndex(g => g._id === good._id)
+            if(~index){
+                goodList[index] = good
+                newState.goodList = goodList
+                console.log('new 000 ', newState.goodList)
+            }else{
+                console.error('没有更新')
+                newState.goodList = goodList
+            }
+            break;
         default: {
 
         }
