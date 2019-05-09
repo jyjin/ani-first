@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const {db} = require('../config')
 const TestSchema = require('./test')
 const UserSchema = require('./user')
 const GoodSchema = require('./good')
 
-mongoose.connect('mongodb://jyjin:jyjin2018@104.194.95.113:27017/webApp',(err)=>{
+mongoose.connect(`mongodb://${db}`,(err)=>{
     if(err){
         console.log(`* Connect DATABASE error, error: `, err)
         process.exit(1);

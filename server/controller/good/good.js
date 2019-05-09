@@ -17,33 +17,26 @@ const {
     ILLEGAL_CAPTCHA
 } = require('../../lib/constant')
 var multiparty = require('multiparty');
+const { setErr, setData, setRes } = require('../../lib/util')
 
-const myPromise = async (fn) => {
-    return new Promise(resolve => {
-        fn()
-        resolve()
-    })
-}
-
-
-
-exports.addGood1 = async (ctx, next) => {
-    let form = new multiparty.Form(
-        { uploadDir: __dirname.replace('/server/controller/good', '/public/upload') }
-    );
-    async function loadimg() {
-        await form.parse(ctx.req, function (err, fields, files) {
-            if (err) { console.log(err); return; }
-            console.log('fields = ', fields);//除文件外的其他附带信息
-            console.log('files = ', files);//文件信息
-            return;
-        });
-    }
-    await loadimg().then(v => {
-        console.log('v == ', v)
-        ctx.body = { msg: "上传成功" };
-    });
-}
+// // 测试上传
+// exports.addGood1 = async (ctx, next) => {
+//     let form = new multiparty.Form(
+//         { uploadDir: __dirname.replace('/server/controller/good', '/public/upload') }
+//     );
+//     async function loadimg() {
+//         await form.parse(ctx.req, function (err, fields, files) {
+//             if (err) { console.log(err); return; }
+//             console.log('fields = ', fields);//除文件外的其他附带信息
+//             console.log('files = ', files);//文件信息
+//             return;
+//         });
+//     }
+//     await loadimg().then(v => {
+//         console.log('v == ', v)
+//         ctx.body = { msg: "上传成功" };
+//     });
+// }
 
 exports.addGood = async (ctx) => {
     let form = new multiparty.Form(
@@ -151,8 +144,7 @@ exports.addGood = async (ctx) => {
         }
     });
 
-    var error = null, result = null
-    await new Promise((resolve) => {
+    var saveResult = await new Promise((resolve) => {
         var bean = {}
         for (var key in _upload.fields) {
             bean[key] = _upload.fields[key][0]
@@ -160,27 +152,25 @@ exports.addGood = async (ctx) => {
         bean.imgs = _upload.successed
         Good.addGood(bean, (err, res) => {
             if (err || !res) {
-                error = DATA_SAVE_ERROR
+                resolve(setErr(DATA_SAVE_ERROR))
             } else {
-                result = res
+                resolve(setData(res))
             }
-            resolve()
         })
     })
 
-    if (error) {
-        ctx.body = error
+    if (saveResult.err) {
+        ctx.body = saveResult.err
     } else {
         ctx.body = {
             res: 1,
-            data: result,
+            data: saveResult.data,
             upload: _upload
         }
     }
 }
 
 exports.getProducts = async (ctx) => {
-    var error = null, result = null
     var opt = {
         page: ctx.request.body.page || 0,
         userId: ctx.request.body.userId,
@@ -189,27 +179,21 @@ exports.getProducts = async (ctx) => {
 
     log.info('getProducts:params', ctx.request.body)
 
-    await new Promise((resolve) => {
+    var queryResult = await new Promise((resolve) => {
         Good.getProducts(opt, (err, res) => {
             if (err || !res) {
-                err = DATA_GET_ERROR
+                resolve(setErr(DATA_GET_ERROR))
             } else {
-                result = res
+                resolve(setData(res))
             }
-            resolve()
         })
     })
 
-    if (error) {
-        ctx.body = error
-    } else {
-        ctx.body = {
-            res: 1,
-            data: result
-        }
-    }
+    ctx.body = setRes(queryResult)
     return
 }
+
+
 
 const votingAction = async (ctx, type) => {
 
@@ -226,38 +210,33 @@ const votingAction = async (ctx, type) => {
     // 设定需要操作的字段值
     var voting = 'voteIds'
     var disvoting = 'disvoteIds'
-    if(type === 'disvote'){
+    if (type === 'disvote') {
         var t = voting
         voting = disvoting
         disvoting = t
     }
 
-    var error = null
-    var result = null
-
     // 查询商品
-    await new Promise(resolve => {
+    var queryResult = await new Promise(resolve => {
         Good.queryGoodById(opt.goodId, (err, res) => {
             if (err || !res) {
-                error = DATA_GET_ERROR
-                resolve()
+                resolve(setErr(DATA_GET_ERROR))
                 return;
-
             } else {
-                result = res
-                resolve()
+                resolve(setData(res))
                 return
             }
         })
     })
 
+
     // 查询错误直接返回
-    if (error) {
-        ctx.body = error
-        return 
+    if (queryResult.err) {
+        ctx.body = queryResult.err
+        return
     }
 
-    var good = result
+    var good = queryResult.data
 
     !good[voting] && (good[voting] = [])
     !good[disvoting] && (good[disvoting] = [])
@@ -274,36 +253,25 @@ const votingAction = async (ctx, type) => {
         // 还没点赞过 添加赞 如果有反对赞 取消该用户反对赞
         good[voting].push(opt.userId)
         var disvotingIndex = good[disvoting].indexOf(opt.userId)
-        if(~disvotingIndex){
+        if (~disvotingIndex) {
             good[disvoting].splice(disvotingIndex, 1)
         }
     }
 
     // 保存点赞
-    await new Promise(r => {
-        good.save(err1 => {
-            if (err1) {
-                error = DATA_SAVE_ERROR
+    var saveResult = await new Promise(resolve => {
+        good.save(err => {
+            if (err) {
+                resolve(setErr(DATA_SAVE_ERROR))
             } else {
-                result = good
+                resolve(setData(good))
             }
-            r()
         })
     })
 
-
-    if(error){
-        ctx.body = error
-        return
-    }else{
-        ctx.body = {
-            res:1,
-            data: result
-        }
-    }
+    ctx.body = setRes(saveResult)
 }
-
 
 exports.vote = async (ctx, next) => votingAction(ctx, 'vote')
 
-exports.disvote = async (ctx, next) =>  votingAction(ctx, 'disvote')
+exports.disvote = async (ctx, next) => votingAction(ctx, 'disvote')

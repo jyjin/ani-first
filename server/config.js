@@ -9,7 +9,7 @@
  */
 module.exports = {
     /**
-     * 服务器配置
+     * 服务器配置˜
      */
     server: {
         // 端口
@@ -19,6 +19,8 @@ module.exports = {
         httpTimeout: 5,                             // http请求超时时间（秒/s）
         pageSize: 3,
     },
+    // db: 'jyjin:jyjin2018@104.194.95.113:27017/webApp',
+    db: 'jyjin:123456@localhost:27017/aniFirst',
     /**
      * 日志配置
      *     优先级：ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < MARK < OFF

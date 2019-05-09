@@ -15,6 +15,22 @@ const isLinux = () => {
     return linuxPlatform.indexOf(process.platform.toLowerCase()) > -1
 }
 
+
+const setRes = (res, other) => {
+    return res.err ? res.err : {
+        res: 1,
+        data: res.data || null,
+        ...other
+    }
+}
+
+const setErr = err => ({ err })
+
+const setData = data => ({ data })
+
 module.exports = {
-    isLinux: isLinux
+    isLinux,
+    setErr,
+    setData,
+    setRes,
 }

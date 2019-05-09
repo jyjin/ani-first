@@ -24,7 +24,7 @@ class GoodList extends Component {
     }
 
     componentDidMount() {
-        this.getGoodList()
+        this.getGoodList('down')
         this.onScroll();
     }
 
